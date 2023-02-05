@@ -1,11 +1,11 @@
 import Head from "next/head";
-import { Flex, Grid, Heading, Text, GridItem } from "@chakra-ui/react";
+import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import CenteredGridItem from "@/components/CenteredGridItem";
 import NavBar, { defaultNavBarProps } from "@/components/NavBar";
-import SocialsBar from "@/components/SocialsBar";
 import { Portrait } from "@/assets";
+import Template from "./template";
 
-function Header() {
+export function Header() {
   return (
     <Flex justifyContent={"space-around"}>
       <Heading>Frontend Developer</Heading>
@@ -16,7 +16,12 @@ function Header() {
 
 function Intro() {
   return (
-    <Flex flexDir={"column"} alignItems={'center'} justifyContent={'center'}>
+    <Flex
+      flexDir={"column"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      ml={"50px"}
+    >
       <Heading>Aditya Banerjee</Heading>
       <Text>This is my personal website.</Text>
     </Flex>
@@ -25,7 +30,7 @@ function Intro() {
 
 function Bio() {
   return (
-    <Grid gridTemplateColumns={"1fr 2fr"}>
+    <Grid gridTemplateColumns={"1fr 1fr"}>
       <CenteredGridItem>
         <Portrait />
       </CenteredGridItem>
@@ -38,23 +43,9 @@ function Bio() {
 
 function Body() {
   return (
-    <Grid
-      gridTemplateRows={"repeat(3, 1fr)"}
-      w={"100vw"}
-      h={"100vh"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <GridItem w={"100%"} h={"auto"}>
-        <Header />
-      </GridItem>
-      <CenteredGridItem w={"100%"} h={"auto"}>
-        <Bio />
-      </CenteredGridItem>
-      <CenteredGridItem w={"100%"} h={"auto"}>
-        <SocialsBar />
-      </CenteredGridItem>
-    </Grid>
+    <Template>
+      <Bio />
+    </Template>
   );
 }
 
