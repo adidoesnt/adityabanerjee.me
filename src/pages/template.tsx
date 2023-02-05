@@ -3,7 +3,11 @@ import CenteredGridItem from '@/components/CenteredGridItem';
 import SocialsBar from '@/components/SocialsBar';
 import { Header } from '.';
 
-export default function Template({ children }: GridProps) {
+export type TemplateProps = GridProps & {
+    homePage?: boolean;
+}
+
+export default function Template({ homePage, children }: TemplateProps) {
     return (
         <Grid
           gridTemplateRows={"200px 1fr 200px"}
@@ -13,7 +17,7 @@ export default function Template({ children }: GridProps) {
           alignItems={"center"}
         >
           <GridItem w={"100vw"} h={"auto"}>
-            <Header />
+            <Header homePage={homePage} />
           </GridItem>
           <CenteredGridItem>
             {children}

@@ -5,10 +5,14 @@ import NavBar, { defaultNavBarProps } from "@/components/NavBar";
 import { Portrait } from "@/assets";
 import Template from "./template";
 
-export function Header() {
+export type HeaderProps = {
+  homePage?: boolean;
+};
+
+export function Header({ homePage }: HeaderProps) {
   return (
     <Flex justifyContent={"space-around"}>
-      <Heading>Frontend Developer</Heading>
+      <Heading>{homePage ? "Frontend Developer" : "Aditya Banerjee"}</Heading>
       <NavBar pages={defaultNavBarProps} />
     </Flex>
   );
@@ -43,7 +47,7 @@ function Bio() {
 
 function Body() {
   return (
-    <Template>
+    <Template homePage>
       <Bio />
     </Template>
   );
