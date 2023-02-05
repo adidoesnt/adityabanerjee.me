@@ -9,15 +9,24 @@ import Link from "next/link";
 export type HeaderProps = {
   homePage?: boolean;
   toggleDarkMode: () => void;
+  currentTheme?: boolean;
 };
 
-export function Header({ homePage, toggleDarkMode }: HeaderProps) {
+export function Header({
+  homePage,
+  toggleDarkMode,
+  currentTheme,
+}: HeaderProps) {
   return (
     <Flex justifyContent={"space-around"}>
       <Link href={"/"}>
         <Heading>{homePage ? "Frontend Developer" : "Aditya Banerjee"}</Heading>
       </Link>
-      <NavBar pages={defaultNavBarProps} toggleDarkMode={toggleDarkMode} />
+      <NavBar
+        pages={defaultNavBarProps}
+        toggleDarkMode={toggleDarkMode}
+        currentTheme={currentTheme}
+      />
     </Flex>
   );
 }

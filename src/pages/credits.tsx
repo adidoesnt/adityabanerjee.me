@@ -128,7 +128,6 @@ export default function Credits() {
         justifyContent={"center"}
         alignItems={"center"}
         gridTemplateColumns={"repeat(3, 1fr)"}
-        overflow={"scroll"}
       >
         <StriveCredits />
         <ByondCredits />

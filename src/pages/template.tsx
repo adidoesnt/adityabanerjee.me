@@ -3,6 +3,7 @@ import CenteredGridItem from "@/components/CenteredGridItem";
 import SocialsBar from "@/components/SocialsBar";
 import { Header } from ".";
 import { createContext, useContext, useState } from "react";
+import { useSessionStorage } from "usehooks-ts";
 
 const ThemeContext = createContext<any>(false);
 
@@ -20,9 +21,8 @@ export type TemplateProps = GridProps & {
 };
 
 export const ThemeProvider = ({ children }: ThemeContextProps) => {
-  const [currentTheme, setCurrentTheme] = useState(true);
+  const [currentTheme, setCurrentTheme] = useSessionStorage('theme', true);
   const toggleDarkMode = () => {
-    console.log('setting theme');
     setCurrentTheme(!currentTheme);
   };
   const context = {
@@ -57,9 +57,10 @@ export function TemplateContent({ homePage, children }: TemplateProps) {
       bgColor={bgColor}
       textColor={textColor}
       transitionDuration={"200ms"}
+      overflow={"scroll"}
     >
       <GridItem w={"100vw"} h={"auto"}>
-        <Header homePage={homePage} toggleDarkMode={toggleDarkMode} />
+        <Header homePage={homePage} toggleDarkMode={toggleDarkMode} currentTheme={currentTheme} />
       </GridItem>
       <CenteredGridItem>{children}</CenteredGridItem>
       <CenteredGridItem>

@@ -9,6 +9,7 @@ export type Page = {
 export type NavBarProps = {
   pages: Page[];
   toggleDarkMode: () => void;
+  currentTheme?: boolean;
 };
 
 export const defaultNavBarProps = [
@@ -20,7 +21,7 @@ export const defaultNavBarProps = [
   { name: "Acknowledgements", path: "credits" },
 ];
 
-export default function NavBar({ pages, toggleDarkMode }: NavBarProps) {
+export default function NavBar({ pages, toggleDarkMode, currentTheme }: NavBarProps) {
   return (
     <Flex
       w={"50%"}
@@ -33,7 +34,7 @@ export default function NavBar({ pages, toggleDarkMode }: NavBarProps) {
           {page.name}
         </Link>
       ))}
-      <Switch defaultChecked colorScheme={"brand"} onChange={toggleDarkMode} />
+      <Switch defaultChecked={currentTheme} colorScheme={"brand"} onChange={toggleDarkMode} />
     </Flex>
   );
 }
