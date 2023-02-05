@@ -5,7 +5,8 @@ import {
   CardBodyProps,
   Text,
   Grid,
-  Divider
+  Divider,
+  Heading,
 } from "@chakra-ui/react";
 import {
   GithubCredits,
@@ -14,7 +15,7 @@ import {
   InstagramCredits,
   GmailCredits,
 } from "@/assets";
-import Template from "./template";
+import Template, { useTheme } from "./template";
 
 export type AcknowledgementCardProps = CardBodyProps & { title: string };
 
@@ -22,6 +23,10 @@ export function AcknowledgementCard({
   title,
   children,
 }: AcknowledgementCardProps) {
+  const { currentTheme } = useTheme();
+  const bgColor = currentTheme ? "brand.700" : "brand.100";
+  const textColor = currentTheme ? "brand.300" : "brand.700";
+
   return (
     <Card
       w={"300px"}
@@ -30,10 +35,21 @@ export function AcknowledgementCard({
       justifyContent={"center"}
       alignItems={"center"}
       textAlign={"center"}
+      bgColor={bgColor}
+      textColor={textColor}
     >
-      <CardHeader fontSize={"25px"}>{title}</CardHeader>
+      <CardHeader fontSize={"25px"}>
+        <Heading>{title}</Heading>
+      </CardHeader>
       <Divider />
-      <CardBody>{children}</CardBody>
+      <CardBody
+        display={"flex"}
+        flexDir={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        {children}
+      </CardBody>
     </Card>
   );
 }
@@ -64,7 +80,8 @@ function OurfinalsCredits() {
     <AcknowledgementCard title={"OURFinals"}>
       <Text>
         To my team at OURFinals, thank you for having faith in our idea - it may
-        not have worked out how we hoped, but I will always cherish our work together.
+        not have worked out how we hoped, but I will always cherish our work
+        together.
       </Text>
     </AcknowledgementCard>
   );
@@ -74,7 +91,8 @@ function FamilyCredits() {
   return (
     <AcknowledgementCard title={"My Family"}>
       <Text>
-        To my parents, brother, family and friends - Thank you for making me who I am.
+        To my parents, brother, family and friends - Thank you for making me who
+        I am.
       </Text>
     </AcknowledgementCard>
   );
@@ -84,7 +102,8 @@ function FriendCredits() {
   return (
     <AcknowledgementCard title={"Pencil Battery"}>
       <Text>
-        To my bandmates at Pencil Battery, thank you for helping me express myself.
+        To my bandmates at Pencil Battery, thank you for helping me express
+        myself.
       </Text>
     </AcknowledgementCard>
   );

@@ -4,6 +4,7 @@ import CenteredGridItem from "@/components/CenteredGridItem";
 import NavBar, { defaultNavBarProps } from "@/components/NavBar";
 import { Portrait } from "@/assets";
 import Template, { useTheme } from "./template";
+import Link from "next/link";
 
 export type HeaderProps = {
   homePage?: boolean;
@@ -13,7 +14,9 @@ export type HeaderProps = {
 export function Header({ homePage, toggleDarkMode }: HeaderProps) {
   return (
     <Flex justifyContent={"space-around"}>
-      <Heading>{homePage ? "Frontend Developer" : "Aditya Banerjee"}</Heading>
+      <Link href={"/"}>
+        <Heading>{homePage ? "Frontend Developer" : "Aditya Banerjee"}</Heading>
+      </Link>
       <NavBar pages={defaultNavBarProps} toggleDarkMode={toggleDarkMode} />
     </Flex>
   );
@@ -29,10 +32,10 @@ function Intro() {
       h={"100%"}
     >
       <Heading>Aditya Banerjee</Heading>
-      <Text mt={"10px"} textAlign={"center"}>
+      <Text mt={"10px"} textAlign={"center"} fontSize={"20px"}>
         Full-time musician, part-time student <br /> and part-time developer.
       </Text>
-      <Text mt={"10px"} textAlign={"center"}>
+      <Text mt={"10px"} textAlign={"center"} fontSize={"20px"}>
         JavaScript is my poison of choice.
       </Text>
     </Flex>
