@@ -5,6 +5,7 @@ import {
   CardBodyProps,
   Text,
   Grid,
+  Divider
 } from "@chakra-ui/react";
 import {
   GithubCredits,
@@ -31,6 +32,7 @@ export function AcknowledgementCard({
       textAlign={"center"}
     >
       <CardHeader fontSize={"25px"}>{title}</CardHeader>
+      <Divider />
       <CardBody>{children}</CardBody>
     </Card>
   );

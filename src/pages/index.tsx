@@ -26,9 +26,15 @@ function Intro() {
       alignItems={"center"}
       justifyContent={"center"}
       ml={"50px"}
+      h={"100%"}
     >
       <Heading>Aditya Banerjee</Heading>
-      <Text>This is my personal website.</Text>
+      <Text mt={"10px"} textAlign={"center"}>
+        Full-time musician, part-time student <br /> and part-time developer.
+      </Text>
+      <Text mt={"10px"} textAlign={"center"}>
+        JavaScript is my poison of choice.
+      </Text>
     </Flex>
   );
 }
@@ -41,7 +47,7 @@ function Bio() {
       <CenteredGridItem>
         <Portrait darkMode={currentTheme} />
       </CenteredGridItem>
-      <CenteredGridItem>
+      <CenteredGridItem h={"100%"} display={"flex"}>
         <Intro />
       </CenteredGridItem>
     </Grid>
