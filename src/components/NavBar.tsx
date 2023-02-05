@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Switch } from "@chakra-ui/react";
 import Link from "next/link";
 
 export type Page = {
@@ -8,6 +8,7 @@ export type Page = {
 
 export type NavBarProps = {
   pages: Page[];
+  toggleDarkMode: () => void;
 };
 
 export const defaultNavBarProps = [
@@ -16,10 +17,10 @@ export const defaultNavBarProps = [
   { name: "Resume", path: "resume" },
   { name: "Blog", path: "blog" },
   { name: "Contact", path: "contact" },
-  { name: "Acknowledgements", path: "credits"}
+  { name: "Acknowledgements", path: "credits" },
 ];
 
-export default function NavBar({ pages }: NavBarProps) {
+export default function NavBar({ pages, toggleDarkMode }: NavBarProps) {
   return (
     <Flex
       w={"50%"}
@@ -32,6 +33,7 @@ export default function NavBar({ pages }: NavBarProps) {
           {page.name}
         </Link>
       ))}
+      <Switch defaultChecked colorScheme={"brand"} onChange={toggleDarkMode} />
     </Flex>
   );
 }

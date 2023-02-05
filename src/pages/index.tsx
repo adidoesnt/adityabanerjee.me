@@ -3,17 +3,18 @@ import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import CenteredGridItem from "@/components/CenteredGridItem";
 import NavBar, { defaultNavBarProps } from "@/components/NavBar";
 import { Portrait } from "@/assets";
-import Template from "./template";
+import Template, { useTheme } from "./template";
 
 export type HeaderProps = {
   homePage?: boolean;
+  toggleDarkMode: () => void;
 };
 
-export function Header({ homePage }: HeaderProps) {
+export function Header({ homePage, toggleDarkMode }: HeaderProps) {
   return (
     <Flex justifyContent={"space-around"}>
       <Heading>{homePage ? "Frontend Developer" : "Aditya Banerjee"}</Heading>
-      <NavBar pages={defaultNavBarProps} />
+      <NavBar pages={defaultNavBarProps} toggleDarkMode={toggleDarkMode} />
     </Flex>
   );
 }
@@ -33,10 +34,12 @@ function Intro() {
 }
 
 function Bio() {
+  const { currentTheme } = useTheme();
+
   return (
     <Grid gridTemplateColumns={"1fr 1fr"}>
       <CenteredGridItem>
-        <Portrait />
+        <Portrait darkMode={currentTheme} />
       </CenteredGridItem>
       <CenteredGridItem>
         <Intro />
