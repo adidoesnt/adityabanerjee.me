@@ -20,10 +20,17 @@ function CenteredButton({
   mt,
   colorScheme,
   onClick,
+  fontSize,
 }: ButtonProps) {
   return (
     <Center>
-      <Button w={w} mt={mt} colorScheme={colorScheme} onClick={onClick}>
+      <Button
+        w={w}
+        mt={mt}
+        colorScheme={colorScheme}
+        onClick={onClick}
+        fontSize={fontSize}
+      >
         {children}
       </Button>
     </Center>
@@ -113,6 +120,7 @@ export function AboutCard() {
             w={"200px"}
             mt={"10px"}
             onClick={toggleMore}
+            fontSize={"20px"}
           >
             View more...
           </CenteredButton>
@@ -183,6 +191,7 @@ export function AboutCard() {
                 w={"200px"}
                 mt={"10px"}
                 onClick={toggleMore}
+                fontSize={"20px"}
               >
                 View less...
               </CenteredButton>
