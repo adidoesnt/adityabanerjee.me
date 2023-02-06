@@ -21,7 +21,7 @@ export type TemplateProps = GridProps & {
 };
 
 export const ThemeProvider = ({ children }: ThemeContextProps) => {
-  const [currentTheme, setCurrentTheme] = useSessionStorage('theme', true);
+  const [currentTheme, setCurrentTheme] = useSessionStorage("theme", true);
   const toggleDarkMode = () => {
     setCurrentTheme(!currentTheme);
   };
@@ -57,10 +57,15 @@ export function TemplateContent({ homePage, children }: TemplateProps) {
       bgColor={bgColor}
       textColor={textColor}
       transitionDuration={"200ms"}
-      overflow={"scroll"}
+      overflowY={"scroll"}
+      overflowX={"hidden"}
     >
       <GridItem w={"100vw"} h={"auto"}>
-        <Header homePage={homePage} toggleDarkMode={toggleDarkMode} currentTheme={currentTheme} />
+        <Header
+          homePage={homePage}
+          toggleDarkMode={toggleDarkMode}
+          currentTheme={currentTheme}
+        />
       </GridItem>
       <CenteredGridItem>{children}</CenteredGridItem>
       <CenteredGridItem>
