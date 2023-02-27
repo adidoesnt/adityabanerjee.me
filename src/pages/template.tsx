@@ -2,7 +2,7 @@ import { Grid, GridItem, GridProps } from "@chakra-ui/react";
 import CenteredGridItem from "@/components/CenteredGridItem";
 import SocialsBar from "@/components/SocialsBar";
 import { Header } from ".";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { useSessionStorage } from "usehooks-ts";
 
 const ThemeContext = createContext<any>(false);
@@ -52,12 +52,14 @@ export function TemplateContent({ homePage, children }: TemplateProps) {
       gridTemplateRows={"200px 1fr 200px"}
       w={"100vw"}
       h={"100vh"}
+      maxW={"100vw"}
+      maxH={"100vh"}
       justifyContent={"center"}
       alignItems={"center"}
       bgColor={bgColor}
       textColor={textColor}
       transitionDuration={"200ms"}
-      overflowY={"scroll"}
+      overflowY={"auto"}
       overflowX={"hidden"}
     >
       <GridItem w={"100vw"} h={"auto"}>
