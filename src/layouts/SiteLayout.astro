@@ -5,14 +5,13 @@ interface Props {
 	title?: string;
 }
 
-const { title = 'Astro' } = Astro.props;
+const { title = 'Aditya Banerjee' } = Astro.props;
 ---
 
 <html lang="en" data-theme="adityabanerjee">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
@@ -21,7 +20,7 @@ const { title = 'Astro' } = Astro.props;
 		<header>
 			<slot name="header" />
 		</header>
-		<main class="p-4">
+		<main class="p-4 md:p-10 grid place-items-center bg-base-100">
 			<slot />
 		</main>
 		<footer>
