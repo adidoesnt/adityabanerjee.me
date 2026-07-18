@@ -1,0 +1,36 @@
+---
+import { footer } from '../content/footer';
+import InstagramIcon from './icons/InstagramIcon.astro';
+import LinkedInIcon from './icons/LinkedInIcon.astro';
+import EmailIcon from './icons/EmailIcon.astro';
+import FacebookIcon from './icons/FacebookIcon.astro';
+import GitHubIcon from './icons/GitHubIcon.astro';
+import type { SocialPlatform } from '../content/footer';
+
+const icons: Record<SocialPlatform, typeof InstagramIcon> = {
+	instagram: InstagramIcon,
+	linkedin: LinkedInIcon,
+	email: EmailIcon,
+	facebook: FacebookIcon,
+	github: GitHubIcon,
+};
+---
+
+<div class="flex justify-center gap-10 p-4">
+	{
+		footer.social.map((link) => {
+			const Icon = icons[link.platform];
+			return (
+				<a
+					href={link.href}
+					aria-label={link.label}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="hover:text-primary"
+				>
+					<Icon class="h-10 w-10 transition-colors duration-300" />
+				</a>
+			);
+		})
+	}
+</div>

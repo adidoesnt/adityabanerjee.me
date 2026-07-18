@@ -1,0 +1,20 @@
+---
+import { header } from '../content/header';
+---
+
+<div class="navbar p-4">
+	<div class="flex-1">
+		<a href="/" class="text-xl font-semibold">{header.name}</a>
+	</div>
+	<div class="flex-none">
+		<ul class="hidden gap-6 md:flex">
+			{
+				header.nav.map((link) => (
+					<li>
+						<a href={link.href} class="hover:text-primary transition-colors duration-300">{link.label}</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</div>
