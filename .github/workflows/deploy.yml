@@ -24,6 +24,8 @@ jobs:
         uses: withastro/action@v3
         with:
           node-version: 22
+        env:
+          BLOG_ENABLED: 'false'
 
   deploy:
     needs: build
