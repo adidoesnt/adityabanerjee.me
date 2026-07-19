@@ -31,11 +31,12 @@ const searchApps = [
 			type="button"
 			id="app-search-toggle"
 			aria-label="Search apps"
-			class="text-base-content/60 hover:text-primary flex items-center justify-center rounded p-1 transition-colors duration-150"
+			class="text-base-content/60 hover:text-primary hidden items-center justify-center rounded p-1 transition-colors duration-150 md:flex"
 		>
 			<Search class="h-4 w-4" />
 		</button>
-		<span data-header-date class="text-base-content/60 font-mono text-sm">&nbsp;</span>
+		<span data-header-date data-compact="true" class="text-base-content/60 font-mono text-xs leading-none md:hidden">&nbsp;</span>
+		<span data-header-date class="text-base-content/60 hidden font-mono text-sm leading-none md:inline">&nbsp;</span>
 	</div>
 </div>
 
@@ -84,14 +85,15 @@ const searchApps = [
 	let intervalId: number | undefined;
 
 	function updateHeaderDate() {
+		const now = new Date();
 		document.querySelectorAll<HTMLElement>('[data-header-date]').forEach((el) => {
-			el.textContent = new Date().toLocaleString(undefined, {
-				weekday: 'short',
-				month: 'short',
-				day: 'numeric',
-				hour: 'numeric',
-				minute: '2-digit',
-			});
+			const compact = el.dataset.compact === 'true';
+			el.textContent = now.toLocaleString(
+				undefined,
+				compact
+					? { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }
+					: { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' },
+			);
 		});
 	}
 

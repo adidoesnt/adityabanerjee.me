@@ -14,30 +14,31 @@ const { title, class: className, closeHref = '/', name, maximizable = true } = A
 
 <div
 	data-window-frame
+	data-close-href={closeHref}
 	transition:name={name}
 	class:list={[
 		'border-base-300/40 bg-base-200/70 group flex max-h-full flex-col overflow-hidden rounded-2xl border shadow-2xl shadow-black/30 backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-black/40',
 		className,
 	]}
 >
-	<div class="border-base-300/30 bg-base-100/30 relative flex h-9 shrink-0 items-center gap-2 px-4">
+	<div class="border-base-300/30 bg-base-100/30 relative flex h-9 shrink-0 items-center gap-3 px-4 md:gap-2">
 		<a
 			href={closeHref}
 			aria-label="Close"
-			class="group/dot bg-primary ring-base-100/20 relative flex h-3 w-3 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"
+			class="group/dot bg-primary ring-base-100/20 relative flex h-4 w-4 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125 md:h-3 md:w-3"
 		>
 			<X
-				class="text-primary-content h-2 w-2 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100"
+				class="text-primary-content h-2.5 w-2.5 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100 md:h-2 md:w-2"
 				stroke-width={3}
 			/>
 		</a>
 		<a
 			href={closeHref}
 			aria-label="Minimize"
-			class="group/dot bg-secondary ring-base-100/20 relative flex h-3 w-3 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"
+			class="group/dot bg-secondary ring-base-100/20 relative flex h-4 w-4 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125 md:h-3 md:w-3"
 		>
 			<Minus
-				class="text-secondary-content h-2 w-2 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100"
+				class="text-secondary-content h-2.5 w-2.5 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100 md:h-2 md:w-2"
 				stroke-width={3}
 			/>
 		</a>
@@ -47,15 +48,15 @@ const { title, class: className, closeHref = '/', name, maximizable = true } = A
 					type="button"
 					data-maximize
 					aria-label="Maximize"
-					class="group/dot bg-accent ring-base-100/20 relative flex h-3 w-3 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"
+					class="group/dot bg-accent ring-base-100/20 relative flex h-4 w-4 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125 md:h-3 md:w-3"
 				>
 					<Maximize2
-						class="text-accent-content h-2 w-2 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100"
+						class="text-accent-content h-2.5 w-2.5 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100 md:h-2 md:w-2"
 						stroke-width={3}
 					/>
 				</button>
 			) : (
-				<span class="bg-accent/40 ring-base-100/20 h-3 w-3 rounded-full ring-1" aria-hidden="true" />
+				<span class="bg-accent/40 ring-base-100/20 h-4 w-4 rounded-full ring-1 md:h-3 md:w-3" aria-hidden="true" />
 			)
 		}
 		{title && (
@@ -88,6 +89,15 @@ const { title, class: className, closeHref = '/', name, maximizable = true } = A
 					frame.style.width = '100%';
 					frame.style.height = '100%';
 					frame.style.maxWidth = '100%';
+				}
+			});
+
+			const closeHref = frame.dataset.closeHref;
+			const backdrop = frame.closest<HTMLElement>('[data-window-backdrop]');
+
+			backdrop?.addEventListener('click', (event) => {
+				if (event.target === backdrop && closeHref) {
+					window.location.href = closeHref;
 				}
 			});
 		});

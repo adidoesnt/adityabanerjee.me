@@ -2,7 +2,9 @@
 
 Personal website of Aditya Banerjee, built with [Astro](https://astro.build) and Tailwind CSS (via daisyUI). Deployed to GitHub Pages at [adityabanerjee.me](https://adityabanerjee.me).
 
-The site is styled like an OS home screen rather than a traditional navbar site: `/` is a "desktop" of app icons and widgets, and each other route (`about`, `timeline`, `projects`, `whoami`, `playlist`) opens as an "app" inside the `WindowFrame` component. Closing or minimizing a window navigates back to `/`; maximizing expands it to fill the main container. Astro's View Transitions (`<ClientRouter />`) animate app icons morphing into their windows and back. On mobile, the same icons/widgets lay out like a phone home screen instead of a desktop icon column.
+The site is styled like an OS home screen rather than a traditional navbar site: `/` is a "desktop" of app icons and widgets, and each other route (`about`, `timeline`, `projects`, `whoami`, `playlist`) opens as an "app" inside the `WindowFrame` component. Closing/minimizing a window, or clicking outside it, navigates back to `/`; maximizing expands it to fill the main container. Astro's View Transitions (`<ClientRouter />`) animate app icons morphing into their windows and back. On mobile, the same icons/widgets lay out like a phone home screen instead of a desktop icon column.
+
+Click-outside-to-close relies on `SiteLayout.astro`'s content wrapper carrying `data-window-backdrop` — `WindowFrame.astro` walks up to that ancestor and only closes when the click target is the backdrop itself (not a bubbled click from inside the window). If you restructure `SiteLayout.astro`'s markup, keep that attribute on the element that directly surrounds the window.
 
 ## Project Structure
 
