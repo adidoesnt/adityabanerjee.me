@@ -1,0 +1,145 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WindowFrame from '../components/WindowFrame.astro';
+import { timeline } from '../content/timeline';
+
+const cardClass =
+	'timeline-item-btn border-base-300/40 bg-base-200/70 flex min-h-28 w-full flex-col items-start justify-center gap-1 rounded-xl border p-4 text-left backdrop-blur-md transition-all duration-200 ease-out hover:-translate-y-1 hover:border-primary/60 hover:shadow-lg hover:shadow-black/30';
+const dateClass = 'text-base-content/60 font-mono text-sm md:text-base';
+---
+
+<SiteLayout title="Timeline | Aditya Banerjee">
+	<Header slot="header" />
+	<WindowFrame title="~/timeline.log" class="w-full max-w-5xl">
+		<!-- Desktop -->
+		<div class="hidden w-full grid-cols-[1fr_2.5rem_1fr] md:grid">
+			{
+				timeline.map((item, index) => {
+					const isEven = index % 2 === 0;
+					const date = <p class={dateClass}>{item.date}</p>;
+					const card = (
+						<button type="button" class={cardClass} data-index={index} aria-label="Show timeline item details">
+							<h3 class="text-base-content text-lg font-semibold underline decoration-primary/60 underline-offset-4">
+								{item.name}
+							</h3>
+							<p class="text-base-content/70 text-sm text-left">{item.description}</p>
+						</button>
+					);
+					return (
+						<>
+							<div class="flex min-h-28 items-center justify-end pr-6">
+								{isEven ? date : card}
+							</div>
+							<div class="flex flex-col items-center">
+								<div class="bg-base-300/60 w-0.5 flex-1" />
+								<div class="bg-primary ring-base-100/40 h-4 w-4 shrink-0 rounded-full ring-4" />
+								<div class="bg-base-300/60 w-0.5 flex-1" />
+							</div>
+							<div class="flex min-h-28 items-center justify-start pl-6">
+								{isEven ? card : date}
+							</div>
+						</>
+					);
+				})
+			}
+		</div>
+
+		<!-- Mobile -->
+		<div class="grid w-full grid-cols-[2.5rem_1fr] gap-x-2 md:hidden">
+			{
+				timeline.map((item, index) => (
+					<>
+						<div class="flex flex-col items-center">
+							<div class="bg-base-300/60 w-0.5 flex-1" />
+							<div class="bg-primary ring-base-100/40 h-4 w-4 shrink-0 rounded-full ring-4" />
+							<div class="bg-base-300/60 w-0.5 flex-1" />
+						</div>
+						<button
+							type="button"
+							class={`${cardClass} my-2`}
+							data-index={index}
+							aria-label="Show timeline item details"
+						>
+							<div class="flex w-full items-center justify-between gap-2">
+								<h3 class="text-base-content text-lg font-semibold underline decoration-primary/60 underline-offset-4">
+									{item.name}
+								</h3>
+								<p class={dateClass}>{item.date}</p>
+							</div>
+							<p class="text-base-content/70 text-sm text-left">{item.description}</p>
+						</button>
+					</>
+				))
+			}
+		</div>
+	</WindowFrame>
+	<Footer slot="footer" />
+</SiteLayout>
+
+<dialog id="timeline-modal" class="modal">
+	<div class="modal-box border-base-300/40 bg-base-200 border">
+		<form method="dialog">
+			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+		</form>
+		<div class="flex w-full items-center justify-between gap-2 pr-8">
+			<h3 id="timeline-modal-title" class="text-xl font-semibold"></h3>
+			<p id="timeline-modal-date" class="text-base-content/60 font-mono text-sm"></p>
+		</div>
+		<img id="timeline-modal-image" class="mt-4 hidden w-full rounded-lg" alt="" />
+		<div id="timeline-modal-description" class="mt-4 flex flex-col gap-3 text-sm"></div>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>
+
+<script type="application/json" id="timeline-data" set:html={JSON.stringify(timeline)} />
+
+<script>
+	interface TimelineItem {
+		name: string;
+		date: string;
+		description: string;
+		imageHref?: string;
+		longDescription: string[];
+	}
+
+	const dataEl = document.getElementById('timeline-data') as HTMLScriptElement;
+	const items: TimelineItem[] = JSON.parse(dataEl.textContent ?? '[]');
+
+	const modal = document.getElementById('timeline-modal') as HTMLDialogElement;
+	const title = document.getElementById('timeline-modal-title') as HTMLElement;
+	const date = document.getElementById('timeline-modal-date') as HTMLElement;
+	const image = document.getElementById('timeline-modal-image') as HTMLImageElement;
+	const description = document.getElementById('timeline-modal-description') as HTMLElement;
+
+	document.querySelectorAll<HTMLButtonElement>('.timeline-item-btn').forEach((button) => {
+		button.addEventListener('click', () => {
+			const index = Number(button.dataset.index);
+			const item = items[index];
+			if (!item) return;
+
+			title.textContent = item.name;
+			date.textContent = item.date;
+
+			if (item.imageHref) {
+				image.src = item.imageHref;
+				image.alt = item.name;
+				image.classList.remove('hidden');
+			} else {
+				image.classList.add('hidden');
+			}
+
+			description.innerHTML = '';
+			item.longDescription.forEach((paragraph) => {
+				const p = document.createElement('p');
+				p.textContent = paragraph;
+				description.appendChild(p);
+			});
+
+			modal.showModal();
+		});
+	});
+</script>
