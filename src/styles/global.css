@@ -18,6 +18,10 @@
   }
 }
 
+dialog.modal[open] {
+  backdrop-filter: blur(4px);
+}
+
 @plugin "daisyui/theme" {
   name: "adityabanerjee";
   default: false;
