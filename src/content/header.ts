@@ -11,6 +11,7 @@ export interface HeaderContent {
 export const header: HeaderContent = {
 	name: 'Aditya Banerjee',
 	nav: [
+		{ label: 'Home', href: '/' },
 		{ label: 'About', href: '/about' },
 		{ label: 'Timeline', href: '/timeline' },
 		{ label: 'Projects', href: '/projects' },

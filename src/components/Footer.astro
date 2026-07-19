@@ -28,12 +28,12 @@ const icons: Record<SocialPlatform, typeof InstagramIcon> = {
 					aria-label={link.label}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="group hover:bg-base-100/40 relative flex h-14 w-14 items-center justify-center rounded-xl transition-all duration-200 ease-out hover:-translate-y-2"
+					class="group hover:bg-base-100/40 relative flex h-14 w-14 items-center justify-center rounded-xl transition-all duration-200 ease-out hover:-translate-y-2 md:h-16 md:w-16"
 				>
 					<span class="border-base-300/40 bg-base-200/90 text-base-content pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 rounded-md border px-2 py-1 font-mono text-xs whitespace-nowrap opacity-0 shadow-lg backdrop-blur-md transition-opacity duration-150 group-hover:opacity-100">
 						{link.label}
 					</span>
-					<Icon class="group-hover:text-primary h-9 w-9 transition-colors duration-150" />
+					<Icon class="group-hover:text-primary h-9 w-9 transition-colors duration-150 md:h-11 md:w-11" />
 					<span class="bg-primary absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
 				</a>
 			);

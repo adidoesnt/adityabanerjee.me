@@ -1,6 +1,7 @@
 ---
 import { header } from '../content/header';
 import { isBlogEnabled } from '../lib/flags';
+import HamburgerIcon from './icons/HamburgerIcon.astro';
 
 const nav = header.nav.filter((link) => link.href !== '/blog' || isBlogEnabled);
 ---
@@ -26,4 +27,53 @@ const nav = header.nav.filter((link) => link.href !== '/blog' || isBlogEnabled);
 			))
 		}
 	</ul>
+	<button
+		type="button"
+		id="mobile-menu-toggle"
+		aria-label="Toggle menu"
+		aria-haspopup="dialog"
+		class="hover:text-primary flex items-center justify-center rounded p-1 transition-colors duration-150 md:hidden"
+	>
+		<HamburgerIcon class="h-7 w-7" />
+	</button>
 </div>
+<dialog id="mobile-menu" class="modal">
+	<div class="modal-box border-base-300/40 bg-base-200 w-72 border p-2">
+		<form method="dialog">
+			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+		</form>
+		<h3 class="px-4 pt-2 mb-3 text-xl font-semibold">Menu</h3>
+		<ul>
+			{
+				nav.map((link) => (
+					<li>
+						<a
+							href={link.href}
+							class="hover:bg-base-300/40 hover:text-primary block rounded-lg px-4 py-1.5 transition-colors duration-150"
+						>
+							{link.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>
+
+<script>
+	const toggle = document.getElementById('mobile-menu-toggle');
+	const menu = document.getElementById('mobile-menu') as HTMLDialogElement;
+
+	toggle?.addEventListener('click', () => {
+		menu?.showModal();
+	});
+
+	menu?.querySelectorAll('a').forEach((link) => {
+		link.addEventListener('click', () => {
+			menu.close();
+		});
+	});
+</script>
