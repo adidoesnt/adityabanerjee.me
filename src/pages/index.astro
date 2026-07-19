@@ -7,12 +7,6 @@ import Desktop from '../components/Desktop.astro';
 
 <SiteLayout>
 	<Header slot="header" />
-	<script is:inline>
-		if (!sessionStorage.getItem('desktop-booted')) {
-			sessionStorage.setItem('desktop-booted', '1');
-			location.replace('/whoami');
-		}
-	</script>
 	<Desktop />
 	<Footer slot="footer" />
 </SiteLayout>
