@@ -16,12 +16,14 @@ const { title = 'Aditya Banerjee' } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="grid min-h-screen grid-rows-[auto_1fr_auto]">
+	<body class="grid h-screen grid-rows-[auto_1fr_auto] overflow-hidden">
 		<header>
 			<slot name="header" />
 		</header>
-		<main class="p-4 md:p-10 grid place-items-center bg-base-100">
-			<slot />
+		<main class="min-h-0 bg-base-100">
+			<div class="flex h-full items-center justify-center p-4 md:p-10">
+				<slot />
+			</div>
 		</main>
 		<footer>
 			<slot name="footer" />

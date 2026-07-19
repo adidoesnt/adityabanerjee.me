@@ -9,11 +9,11 @@ const { title, class: className } = Astro.props;
 
 <div
 	class:list={[
-		'border-base-300/40 bg-base-200/70 group overflow-hidden rounded-2xl border shadow-2xl shadow-black/30 backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-black/40',
+		'border-base-300/40 bg-base-200/70 group flex max-h-full flex-col overflow-hidden rounded-2xl border shadow-2xl shadow-black/30 backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-black/40',
 		className,
 	]}
 >
-	<div class="border-base-300/30 bg-base-100/30 relative flex h-9 items-center gap-2 px-4">
+	<div class="border-base-300/30 bg-base-100/30 relative flex h-9 shrink-0 items-center gap-2 px-4">
 		<span class="bg-primary ring-base-100/20 h-3 w-3 rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"></span>
 		<span class="bg-secondary ring-base-100/20 h-3 w-3 rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"></span>
 		<span class="bg-accent ring-base-100/20 h-3 w-3 rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"></span>
@@ -25,7 +25,7 @@ const { title, class: className } = Astro.props;
 			</span>
 		)}
 	</div>
-	<div class="p-6 md:p-10">
+	<div class="min-h-0 flex-1 overflow-y-auto p-6 md:p-10">
 		<slot />
 	</div>
 </div>
