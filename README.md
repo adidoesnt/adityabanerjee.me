@@ -2,22 +2,38 @@
 
 Personal website of Aditya Banerjee, built with [Astro](https://astro.build) and Tailwind CSS (via daisyUI). Deployed to GitHub Pages at [adityabanerjee.me](https://adityabanerjee.me).
 
+The site is styled like an OS home screen rather than a traditional navbar site: `/` is a "desktop" of app icons and widgets, and each other route (`about`, `timeline`, `projects`, `whoami`, `playlist`) opens as an "app" inside the `WindowFrame` component. Closing or minimizing a window navigates back to `/`; maximizing expands it to fill the main container. Astro's View Transitions (`<ClientRouter />`) animate app icons morphing into their windows and back. On mobile, the same icons/widgets lay out like a phone home screen instead of a desktop icon column.
+
 ## Project Structure
 
 ```text
 /
-├── public/                 # Static assets, CNAME
+├── public/                 # Static assets, CNAME, wallpaper-mark.jpg
 ├── src/
-│   ├── components/         # Astro components (incl. icons/)
-│   ├── content/            # Page copy/data (home, about, projects, timeline, header, footer)
-│   ├── layouts/            # Shared page layouts
+│   ├── components/         # Astro components: Desktop, WindowFrame, AppIconTile,
+│   │                       #   widgets (Gallery/Weather/Calendar/Spotify), icons/
+│   ├── content/            # Page copy/data (home, about, projects, timeline, apps,
+│   │                       #   spotify, header, footer)
+│   ├── layouts/            # Shared page layout (SiteLayout — desktop wallpaper lives here)
 │   ├── lib/                # Shared utilities
-│   ├── pages/               # Routes: index, about, projects, timeline
+│   ├── pages/               # Routes: index (desktop), about, timeline, projects,
+│   │                        #   whoami, playlist
 │   └── styles/              # Global styles
 └── astro.config.mjs
 ```
 
-Each `.astro` file in `src/pages/` maps to a route based on its file name. Page content (nav links, copy, etc.) lives in `src/content/` as typed TypeScript modules rather than a content collection.
+Each `.astro` file in `src/pages/` maps to a route based on its file name. Page content (app list, copy, etc.) lives in `src/content/` as typed TypeScript modules rather than a content collection. `src/content/apps.ts` drives the desktop icon grid; adding an entry there (plus a matching page) adds a new "app".
+
+### Desktop widgets
+
+`Desktop.astro` (rendered on `/`) also lays out a few widgets, each a standalone component:
+
+- **GalleryWidget** — profile photo, links to the `whoami` app.
+- **WeatherWidget** — current conditions via the free [Open-Meteo](https://open-meteo.com) API (no key required), using browser geolocation with a London fallback.
+- **CalendarWidget** — today's date, computed client-side.
+- **SpotifyWidget** — links to the `playlist` app, background art pulled from Spotify's public oEmbed endpoint at build time.
+
+Both widgets and app icons only run their init/fetch scripts via the `astro:page-load` event, since Astro's View Transitions execute a script's top-level code once per session — see the comments in `WindowFrame.astro`, `WeatherWidget.astro`, and `CalendarWidget.astro` if adding similar client scripts.
 
 ## Commands
 
@@ -33,4 +49,4 @@ All commands are run from the root of the project:
 
 ## Deployment
 
-Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the site with `BLOG_ENABLED=false` (the Blog nav link is hidden in production builds) and publishes it to GitHub Pages under the custom domain in `public/CNAME`.
+Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the site with `BLOG_ENABLED=false` (the Blog app icon is hidden in production builds) and publishes it to GitHub Pages under the custom domain in `public/CNAME`.

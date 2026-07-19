@@ -9,8 +9,8 @@ export interface AppLink {
 
 export const apps: AppLink[] = [
 	{ id: 'whoami', label: 'whoami', href: '/whoami', icon: 'UserRound' },
-	{ id: 'about', label: 'About', href: '/about', icon: 'MessageCircleQuestionMark' },
-	{ id: 'timeline', label: 'Timeline', href: '/timeline', icon: 'History' },
-	{ id: 'projects', label: 'Projects', href: '/projects', icon: 'FolderGit2' },
-	{ id: 'blog', label: 'Blog', href: '/blog', icon: 'Rss' },
+	{ id: 'about', label: 'about', href: '/about', icon: 'MessageCircleQuestionMark' },
+	{ id: 'timeline', label: 'timeline', href: '/timeline', icon: 'History' },
+	{ id: 'projects', label: 'projects', href: '/projects', icon: 'FolderGit2' },
+	{ id: 'blog', label: 'blog', href: '/blog', icon: 'Rss' },
 ];
