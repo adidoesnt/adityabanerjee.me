@@ -6,9 +6,10 @@ interface Props {
 	class?: string;
 	closeHref?: string;
 	name?: string;
+	maximizable?: boolean;
 }
 
-const { title, class: className, closeHref = '/', name } = Astro.props;
+const { title, class: className, closeHref = '/', name, maximizable = true } = Astro.props;
 ---
 
 <div
@@ -40,17 +41,23 @@ const { title, class: className, closeHref = '/', name } = Astro.props;
 				stroke-width={3}
 			/>
 		</a>
-		<button
-			type="button"
-			data-maximize
-			aria-label="Maximize"
-			class="group/dot bg-accent ring-base-100/20 relative flex h-3 w-3 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"
-		>
-			<Maximize2
-				class="text-accent-content h-2 w-2 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100"
-				stroke-width={3}
-			/>
-		</button>
+		{
+			maximizable ? (
+				<button
+					type="button"
+					data-maximize
+					aria-label="Maximize"
+					class="group/dot bg-accent ring-base-100/20 relative flex h-3 w-3 items-center justify-center rounded-full ring-1 transition-transform duration-200 ease-out hover:scale-125"
+				>
+					<Maximize2
+						class="text-accent-content h-2 w-2 opacity-0 transition-opacity duration-150 group-hover/dot:opacity-100"
+						stroke-width={3}
+					/>
+				</button>
+			) : (
+				<span class="bg-accent/40 ring-base-100/20 h-3 w-3 rounded-full ring-1" aria-hidden="true" />
+			)
+		}
 		{title && (
 			<span
 				class="text-base-content/50 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-mono text-xs tracking-wide"
@@ -65,22 +72,29 @@ const { title, class: className, closeHref = '/', name } = Astro.props;
 </div>
 
 <script>
-	document.querySelectorAll<HTMLElement>('[data-window-frame]').forEach((frame) => {
-		const button = frame.querySelector<HTMLButtonElement>('[data-maximize]');
+	function initWindowFrames() {
+		document.querySelectorAll<HTMLElement>('[data-window-frame]').forEach((frame) => {
+			const button = frame.querySelector<HTMLButtonElement>('[data-maximize]');
 
-		button?.addEventListener('click', () => {
-			const maximized = frame.dataset.maximized === 'true';
-			frame.dataset.maximized = String(!maximized);
+			button?.addEventListener('click', () => {
+				const maximized = frame.dataset.maximized === 'true';
+				frame.dataset.maximized = String(!maximized);
 
-			if (maximized) {
-				frame.style.removeProperty('width');
-				frame.style.removeProperty('height');
-				frame.style.removeProperty('max-width');
-			} else {
-				frame.style.width = '100%';
-				frame.style.height = '100%';
-				frame.style.maxWidth = '100%';
-			}
+				if (maximized) {
+					frame.style.removeProperty('width');
+					frame.style.removeProperty('height');
+					frame.style.removeProperty('max-width');
+				} else {
+					frame.style.width = '100%';
+					frame.style.height = '100%';
+					frame.style.maxWidth = '100%';
+				}
+			});
 		});
-	});
+	}
+
+	// Astro view transitions only execute a script's top-level code once per
+	// session, even if the same script re-appears on a later navigation, so
+	// the actual init logic has to live behind astro:page-load to rerun.
+	document.addEventListener('astro:page-load', initWindowFrames);
 </script>

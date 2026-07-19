@@ -1,0 +1,150 @@
+---
+import { Sun, CloudSun, Cloud, CloudFog, CloudDrizzle, CloudRain, CloudSnow, CloudLightning } from '@lucide/astro';
+
+const iconClass = 'text-base-content/80 h-8 w-8';
+const icons: { key: string; Icon: typeof Sun }[] = [
+	{ key: 'sunny', Icon: Sun },
+	{ key: 'partly-cloudy', Icon: CloudSun },
+	{ key: 'cloudy', Icon: Cloud },
+	{ key: 'fog', Icon: CloudFog },
+	{ key: 'drizzle', Icon: CloudDrizzle },
+	{ key: 'rain', Icon: CloudRain },
+	{ key: 'snow', Icon: CloudSnow },
+	{ key: 'storm', Icon: CloudLightning },
+];
+---
+
+<div
+	data-weather-widget
+	class="border-base-300/40 bg-base-200/70 flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-2xl border p-4 text-center shadow-lg shadow-black/30 backdrop-blur-md md:w-40"
+>
+	<div class="relative flex h-8 w-8 items-center justify-center">
+		{
+			icons.map(({ key, Icon }) => (
+				<span data-weather-icon={key} class="absolute inset-0 hidden">
+					<Icon class={iconClass} />
+				</span>
+			))
+		}
+	</div>
+	<span data-weather-temp class="text-lg font-semibold">--°</span>
+	<span data-weather-place class="text-base-content/60 text-xs">Loading…</span>
+</div>
+
+<script>
+	const LONDON = { lat: 51.5074, lon: -0.1278, place: 'London' };
+	const CACHE_KEY = 'weather-cache-v1';
+	const CACHE_TTL_MS = 10 * 60 * 1000;
+
+	interface WeatherCache {
+		place: string;
+		temperature: number;
+		weathercode: number;
+		ts: number;
+	}
+
+	function readCache(): WeatherCache | null {
+		try {
+			const raw = sessionStorage.getItem(CACHE_KEY);
+			if (!raw) return null;
+			const data = JSON.parse(raw) as WeatherCache;
+			if (Date.now() - data.ts > CACHE_TTL_MS) return null;
+			return data;
+		} catch {
+			return null;
+		}
+	}
+
+	function writeCache(place: string, temperature: number, weathercode: number) {
+		sessionStorage.setItem(CACHE_KEY, JSON.stringify({ place, temperature, weathercode, ts: Date.now() }));
+	}
+
+	function weatherIconFor(code: number): string {
+		if (code === 0) return 'sunny';
+		if (code === 1 || code === 2) return 'partly-cloudy';
+		if (code === 3) return 'cloudy';
+		if (code === 45 || code === 48) return 'fog';
+		if ([51, 53, 55, 56, 57].includes(code)) return 'drizzle';
+		if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'rain';
+		if ([71, 73, 75, 77, 85, 86].includes(code)) return 'snow';
+		if ([95, 96, 99].includes(code)) return 'storm';
+		return 'cloudy';
+	}
+
+	function applyWeather(place: string, temperature: number, weathercode: number) {
+		const iconKey = weatherIconFor(weathercode);
+		document.querySelectorAll<HTMLElement>('[data-weather-widget]').forEach((widget) => {
+			widget.querySelectorAll<HTMLElement>('[data-weather-icon]').forEach((el) => {
+				el.classList.toggle('hidden', el.dataset.weatherIcon !== iconKey);
+			});
+			const tempEl = widget.querySelector<HTMLElement>('[data-weather-temp]');
+			const placeEl = widget.querySelector<HTMLElement>('[data-weather-place]');
+			if (tempEl) tempEl.textContent = `${Math.round(temperature)}°C`;
+			if (placeEl) placeEl.textContent = place;
+		});
+	}
+
+	function showUnavailable() {
+		document.querySelectorAll<HTMLElement>('[data-weather-place]').forEach((el) => {
+			el.textContent = 'Weather unavailable';
+		});
+	}
+
+	async function loadWeather(lat: number, lon: number, place: string) {
+		try {
+			const res = await fetch(
+				`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
+			);
+			if (!res.ok) throw new Error('weather request failed');
+			const data = await res.json();
+			const { temperature, weathercode } = data.current_weather;
+			applyWeather(place, temperature, weathercode);
+			writeCache(place, temperature, weathercode);
+		} catch {
+			showUnavailable();
+		}
+	}
+
+	async function reverseGeocode(lat: number, lon: number): Promise<string> {
+		try {
+			const res = await fetch(
+				`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
+			);
+			if (!res.ok) throw new Error('reverse geocode failed');
+			const data = await res.json();
+			return data.city || data.locality || 'Your location';
+		} catch {
+			return 'Your location';
+		}
+	}
+
+	function fetchFreshWeather() {
+		if ('geolocation' in navigator) {
+			navigator.geolocation.getCurrentPosition(
+				async (position) => {
+					const { latitude, longitude } = position.coords;
+					const place = await reverseGeocode(latitude, longitude);
+					loadWeather(latitude, longitude, place);
+				},
+				() => loadWeather(LONDON.lat, LONDON.lon, LONDON.place),
+				{ timeout: 5000, maximumAge: 600000 },
+			);
+		} else {
+			loadWeather(LONDON.lat, LONDON.lon, LONDON.place);
+		}
+	}
+
+	function initWeatherWidgets() {
+		const cached = readCache();
+		if (cached) {
+			applyWeather(cached.place, cached.temperature, cached.weathercode);
+		} else {
+			fetchFreshWeather();
+		}
+	}
+
+	// Astro view transitions only execute a script's top-level code once per
+	// session, even if the same script re-appears on a later navigation, so
+	// the actual init logic has to live behind astro:page-load to rerun.
+	document.addEventListener('astro:page-load', initWeatherWidgets);
+</script>

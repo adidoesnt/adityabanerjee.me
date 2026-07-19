@@ -1,0 +1,38 @@
+---
+---
+
+<div
+	data-calendar-widget
+	class="border-base-300/40 bg-base-200/70 flex aspect-square w-full flex-col overflow-hidden rounded-2xl border shadow-lg shadow-black/30 backdrop-blur-md md:w-40"
+>
+	<div
+		data-calendar-weekday
+		class="bg-primary text-primary-content py-1 text-center text-xs font-semibold uppercase tracking-wide"
+	>
+		&nbsp;
+	</div>
+	<div class="flex flex-1 flex-col items-center justify-center gap-0.5 py-3">
+		<span data-calendar-date class="text-3xl font-bold leading-none">--</span>
+		<span data-calendar-month class="text-base-content/60 text-xs">&nbsp;</span>
+	</div>
+</div>
+
+<script>
+	function initCalendarWidgets() {
+		document.querySelectorAll<HTMLElement>('[data-calendar-widget]').forEach((widget) => {
+			const now = new Date();
+			const weekdayEl = widget.querySelector<HTMLElement>('[data-calendar-weekday]');
+			const dateEl = widget.querySelector<HTMLElement>('[data-calendar-date]');
+			const monthEl = widget.querySelector<HTMLElement>('[data-calendar-month]');
+
+			if (weekdayEl) weekdayEl.textContent = now.toLocaleDateString(undefined, { weekday: 'short' });
+			if (dateEl) dateEl.textContent = String(now.getDate());
+			if (monthEl) monthEl.textContent = now.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+		});
+	}
+
+	// Astro view transitions only execute a script's top-level code once per
+	// session, even if the same script re-appears on a later navigation, so
+	// the actual init logic has to live behind astro:page-load to rerun.
+	document.addEventListener('astro:page-load', initCalendarWidgets);
+</script>

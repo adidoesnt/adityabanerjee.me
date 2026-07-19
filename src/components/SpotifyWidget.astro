@@ -1,0 +1,32 @@
+---
+import { spotify } from '../content/spotify';
+import SpotifyIcon from './icons/SpotifyIcon.astro';
+
+const artistUrl = `https://open.spotify.com/artist/${spotify.artistId}`;
+
+// Built fully static, so this runs once at build time (like the GitHub fetch
+// in projects.astro) and won't pick up a changed image until the next build.
+let coverImage: string | null = null;
+
+try {
+	const response = await fetch(`https://open.spotify.com/oembed?url=${artistUrl}`);
+	if (response.ok) {
+		const data = (await response.json()) as { thumbnail_url?: string };
+		coverImage = data.thumbnail_url ?? null;
+	}
+} catch {
+	coverImage = null;
+}
+---
+
+<a
+	href="/playlist"
+	transition:name="app-icon-playlist"
+	aria-label="Open playlist"
+	class="group border-base-300/40 bg-base-200/70 relative flex aspect-square w-full flex-col items-center justify-end gap-1 overflow-hidden rounded-2xl border bg-cover bg-center p-4 text-center shadow-lg shadow-black/30 backdrop-blur-md transition-all duration-200 ease-out hover:-translate-y-1 hover:border-primary/60 hover:shadow-black/40 md:w-40"
+	style={coverImage ? `background-image: url(${coverImage})` : undefined}
+>
+	{coverImage && <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />}
+	<SpotifyIcon class="relative h-6 w-6 text-white transition-transform duration-200 ease-out group-hover:scale-110" />
+	<span class="relative text-xs font-medium text-white">Open Playlist</span>
+</a>

@@ -1,0 +1,16 @@
+---
+import { home } from '../content/home';
+---
+
+<a
+	href="/whoami"
+	aria-label="whoami"
+	class="bg-neutral flex aspect-square w-full flex-col items-center gap-2 rounded-2xl p-2 pb-3 shadow-lg shadow-black/30 transition-transform duration-200 ease-out hover:-rotate-2 md:w-40"
+>
+	<img
+		src={home.displayImage}
+		alt="Aditya Banerjee"
+		class="min-h-0 w-full flex-1 rounded-lg object-cover"
+	/>
+  <span class="text-neutral-content/70 font-mono text-xs">~/adi.jpg</span>
+</a>
