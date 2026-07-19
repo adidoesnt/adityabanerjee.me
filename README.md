@@ -1,43 +1,36 @@
-# Astro Starter Kit: Minimal
+# adityabanerjee.me
 
-```sh
-bun create astro@latest -- --template minimal
-```
+Personal website of Aditya Banerjee, built with [Astro](https://astro.build) and Tailwind CSS (via daisyUI). Deployed to GitHub Pages at [adityabanerjee.me](https://adityabanerjee.me).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project Structure
 
 ```text
 /
-├── public/
+├── public/                 # Static assets, CNAME
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/         # Astro components (incl. icons/)
+│   ├── content/            # Page copy/data (home, about, projects, timeline, header, footer)
+│   ├── layouts/            # Shared page layouts
+│   ├── lib/                # Shared utilities
+│   ├── pages/               # Routes: index, about, projects, timeline
+│   └── styles/              # Global styles
+└── astro.config.mjs
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Each `.astro` file in `src/pages/` maps to a route based on its file name. Page content (nav links, copy, etc.) lives in `src/content/` as typed TypeScript modules rather than a content collection.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Commands
 
-Any static assets, like images, can be placed in the `public/` directory.
+All commands are run from the root of the project:
 
-## 🧞 Commands
+| Command         | Action                                            |
+| :-------------- | :------------------------------------------------- |
+| `bun install`   | Installs dependencies                              |
+| `bun dev`       | Starts local dev server at `localhost:4321`        |
+| `bun build`     | Build the production site to `./dist/`             |
+| `bun preview`   | Preview the build locally before deploying         |
+| `bun astro ...` | Run CLI commands like `astro add`, `astro check`   |
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the site with `BLOG_ENABLED=false` (the Blog nav link is hidden in production builds) and publishes it to GitHub Pages under the custom domain in `public/CNAME`.
