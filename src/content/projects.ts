@@ -7,7 +7,6 @@ export interface FeaturedProject {
 }
 
 export const tooltips = {
-	carousel: 'Swipe to browse',
 	allProjects: "Click on a project's name to view its GitHub page.",
 };
 

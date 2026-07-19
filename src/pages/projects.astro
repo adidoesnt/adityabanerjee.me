@@ -41,13 +41,12 @@ const cardClass =
 		<div class="flex w-full flex-col items-center gap-12">
 			<div class="flex w-full flex-col items-center gap-3">
 				<h2 class="text-2xl font-semibold">Featured Projects</h2>
-				<p class="text-base-content/50 text-sm md:hidden">{tooltips.carousel}</p>
-				<div class="flex w-full justify-center snap-x snap-mandatory gap-4 overflow-x-auto pt-2 pb-2">
+				<div class="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{
 						featuredProjects.map((project, index) => (
 							<button
 								type="button"
-								class={`${cardClass} featured-project-btn flex w-72 shrink-0 snap-center flex-col items-center text-center`}
+								class={`${cardClass} featured-project-btn flex flex-col items-center text-center`}
 								data-index={index}
 								aria-label={`Show details for ${project.name}`}
 							>
