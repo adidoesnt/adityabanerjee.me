@@ -24,6 +24,13 @@ The site is styled like an OS home screen rather than a traditional navbar site:
 
 Each `.astro` file in `src/pages/` maps to a route based on its file name. Page content (app list, copy, etc.) lives in `src/content/` as typed TypeScript modules rather than a content collection. `src/content/apps.ts` drives the desktop icon grid; adding an entry there (plus a matching page) adds a new "app".
 
+### Header
+
+`Header.astro` renders on every page (sticky top bar) and, besides the site logo, has two live pieces:
+
+- A search button that opens a modal listing every app (desktop grid apps plus `whoami`/`playlist`, which launch from widgets rather than a grid icon); typing filters the list and Enter/click navigates.
+- A live date/time readout, updated client-side every 30s.
+
 ### Desktop widgets
 
 `Desktop.astro` (rendered on `/`) also lays out a few widgets, each a standalone component:
@@ -33,7 +40,11 @@ Each `.astro` file in `src/pages/` maps to a route based on its file name. Page 
 - **CalendarWidget** — today's date, computed client-side.
 - **SpotifyWidget** — links to the `playlist` app, background art pulled from Spotify's public oEmbed endpoint at build time.
 
-Both widgets and app icons only run their init/fetch scripts via the `astro:page-load` event, since Astro's View Transitions execute a script's top-level code once per session — see the comments in `WindowFrame.astro`, `WeatherWidget.astro`, and `CalendarWidget.astro` if adding similar client scripts.
+Widgets, app icons, and the header's search/clock only run their init/fetch scripts via the `astro:page-load` event, since Astro's View Transitions execute a script's top-level code once per session — see the comments in `WindowFrame.astro`, `WeatherWidget.astro`, `CalendarWidget.astro`, and `Header.astro` if adding similar client scripts.
+
+### Desktop wallpaper
+
+`SiteLayout.astro` paints the faint background pattern behind the desktop with a CSS `mask-image` (`mask-mode: luminance`) using `public/wallpaper-mark.jpg` — white areas of that image become the visible (painted-in-theme-color) shape, black areas disappear. Swap the image or tweak `opacity`/`mask-size` in that file's `<style>` block to adjust it; if the replacement image has real transparency (a PNG/SVG) rather than a black background, switch `mask-mode` to `alpha` instead.
 
 ## Commands
 
