@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -15,13 +16,14 @@ const { title = 'Aditya Banerjee' } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<ClientRouter />
 	</head>
 	<body class="grid h-dvh grid-rows-[auto_1fr_auto] overflow-hidden">
 		<header>
 			<slot name="header" />
 		</header>
 		<main class="min-h-0 bg-base-100">
-			<div class="flex h-full items-center justify-center p-4 md:p-10">
+			<div class="flex h-full items-center justify-center overflow-y-auto p-4 md:p-10">
 				<slot />
 			</div>
 		</main>

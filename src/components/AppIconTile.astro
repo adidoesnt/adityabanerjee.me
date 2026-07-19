@@ -1,0 +1,34 @@
+---
+import { UserRound, MessageCircleQuestionMark, History, FolderGit2, Rss } from '@lucide/astro';
+import type { AppLink, AppIcon } from '../content/apps';
+
+interface Props {
+	app: AppLink;
+}
+
+const { app } = Astro.props;
+
+const icons: Record<AppIcon, typeof UserRound> = {
+	UserRound,
+	MessageCircleQuestionMark,
+	History,
+	FolderGit2,
+	Rss,
+};
+
+const Icon = icons[app.icon];
+---
+
+<a
+	href={app.href}
+	transition:name={`app-icon-${app.id}`}
+	class="group flex flex-col items-center gap-2"
+	aria-label={app.label}
+>
+	<span class="border-base-300/40 bg-base-200/70 flex h-14 w-14 items-center justify-center rounded-2xl border shadow-lg shadow-black/30 backdrop-blur-md transition-all duration-200 ease-out group-hover:-translate-y-1 group-hover:border-primary/60 group-hover:shadow-black/40 md:h-16 md:w-16">
+		<Icon class="text-base-content/80 h-6 w-6 transition-colors duration-150 group-hover:text-primary md:h-7 md:w-7" />
+	</span>
+	<span class="text-base-content/80 text-center text-xs font-medium drop-shadow-sm md:text-sm">
+		{app.label}
+	</span>
+</a>
