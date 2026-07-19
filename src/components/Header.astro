@@ -1,5 +1,8 @@
 ---
 import { header } from '../content/header';
+import { isBlogEnabled } from '../lib/flags';
+
+const nav = header.nav.filter((link) => link.href !== '/blog' || isBlogEnabled);
 ---
 
 <div
@@ -11,7 +14,7 @@ import { header } from '../content/header';
 	</a>
 	<ul class="hidden gap-1 md:flex">
 		{
-			header.nav.map((link) => (
+			nav.map((link) => (
 				<li>
 					<a
 						href={link.href}
