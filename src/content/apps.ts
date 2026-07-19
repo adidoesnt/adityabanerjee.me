@@ -1,4 +1,4 @@
-export type AppIcon = 'UserRound' | 'MessageCircleQuestionMark' | 'History' | 'FolderGit2' | 'Rss';
+export type AppIcon = 'UserRound' | 'MessageCircleQuestionMark' | 'History' | 'FolderGit2' | 'Rss' | 'ListMusic';
 
 export interface AppLink {
 	id: string;
